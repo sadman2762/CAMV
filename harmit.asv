@@ -1,0 +1,213 @@
+px = [2, 4, 9, 8];
+py = [2, 5, 4, 1];
+
+plot(px,py,'*');
+axis equal;
+hold on;
+t0 = -1; t1 = 0; t2 = 1; t3 = 2;
+syms a3 a2 a1 a0 t
+x(t) = a3*t^3 + a2*t^2 + a1*t + a0;
+ex =[
+    x(t0) == px(1),
+    x(t1) == px(2),
+    x(t2) == px(3),
+    x(t3) == px(4)
+];
+mx = solve(ex,[a3,a2,a1,a0]);
+cx(t) = mx.a3*t^3 + mx.a2*t^2 + mx.a1*t + mx.a0;
+syms b3 b2 b1 b0 
+y(t) = b3*t^3 + b2*t^2 + b1*t + b0;
+ey = [
+    y(t0) == py(1),
+    y(t1) == py(2),
+    y(t2) == py(3),
+    y(t3) == py(4)
+    ];
+my = solve(ey,[b3,b2,b1,b0]);
+cy(t) = my.b3*t^3 + my.b2*t^2 + my.b1*t + my.b0;
+fplot(cx(t),cy(t),[t0 t3])
+
+%%
+% 4 points
+clear
+% Control points
+px = [2, 4, 9, 8];
+py = [2, 5, 4, 1];
+
+% Plotting the control points
+plot(px, py, '*');
+axis equal;
+hold on;
+% t parameter values
+t0 = -1; t1 = 0; t2 = 1; t3 = 2;
+syms a3 a2 a1 a0
+
+% System of equations
+ex = [
+    a3 * t0^3 + a2 * t0^2 + a1 * t0 + a0 == px(1), ...
+    a3 * t1^3 + a2 * t1^2 + a1 * t1 + a0 == px(2), ...
+    a3 * t2^3 + a2 * t2^2 + a1 * t2 + a0 == px(3), ...
+    a3 * t3^3 + a2 * t3^2 + a1 * t3 + a0 == px(4)
+];
+
+% Obtaining the coefficients
+mx = solve(ex, [a3, a2, a1, a0]);
+syms t
+
+% The final coordinate function to x
+cx(t) = mx.a3 * t^3 + mx.a2 * t^2 + mx.a1 * t + mx.a0;
+
+syms b3 b2 b1 b0
+ey = [
+    b3 * t0^3 + b2 * t0^2 + b1 * t0 + b0 == py(1), ...
+    b3 * t1^3 + b2 * t1^2 + b1 * t1 + b0 == py(2), ...
+    b3 * t2^3 + b2 * t2^2 + b1 * t2 + b0 == py(3), ...
+    b3 * t3^3 + b2 * t3^2 + b1 * t3 + b0 == py(4)
+];
+
+% Obtaining the coefficients
+my = solve(ey, [b3, b2, b1, b0]);
+
+% The final coordinate function to y
+cy(t) = my.b3 * t^3 + my.b2 * t^2 + my.b1 * t + my.b0;
+
+% Plotting the two coordinate functions, just as we did with any other
+% parametric curves
+fplot(cx(t), cy(t), [t0, t3])
+%%
+px = [2, 8];
+py = [2, 1];
+
+vx = [1, 2];
+vy = [3,-3];
+plot(px,py,'*');
+axis equal
+axis([0 10 -4 6])
+hold on
+quiver(px(1),py(1),vx(1),vy(1));
+quiver(px(2),py(2),vx(2),vy(2));
+
+t0 = -1; t1 = 1; 
+syms a3 a2 a1 a0 t
+x(t) = a3 * t^3 + a2 * t^2 + a1 * t + a0;
+xd(t) = diff(x(t),t);
+ex = [
+    x(t0) == px(1),...
+    x(t1) == px(2),...
+    xd(t0) == vx(1),...
+    xd(t1) == vx(2)
+    ];
+mx = solve(ex,[a3 a2 a1 a0]);
+cx(t) = mx.a3*t^3 + mx.a2*t^2 + mx.a1*t + mx.a0;
+syms b3 b2 b1 b0
+y(t) = b3*t^3 + b2*t^2 + b1*t + b0;
+yd(t) = diff(y(t),t);
+ey = [
+    y(t0) == py(1),...
+    y(t1) == py(2),...
+    yd(t0) == vy(1),...
+    yd(t1) == vy(2)
+    ];
+my = solve(ey,[b3 b2 b1 b0]);
+cy(t) = my.b3*t^3 + my.b2*t^2 + my.b1*t + my.b0;
+
+fplot(cx(t),cy(t),[t0, t1]);
+%%
+% 2 points, 2 tangents
+% Control points
+px = [2, 8];
+py = [2, 1];
+% Tangents
+vx = [1, 2];
+vy = [3, -3];
+
+plot(px, py, '*')
+axis equal
+axis([0 10 -4 6])
+hold on
+quiver(px(1), py(1), vx(1), vy(1));
+quiver(px(2), py(2), vx(2), vy(2));
+
+t0 = -1; t1 = 1; t2 = 2; t3 = 4;
+
+syms a3 a2 a1 a0
+% Equation when working with a control point
+x(t) = a3 * t^3 + a2 * t^2 + a1 * t + a0;
+% Equation when working with a tangent
+xd(t) = diff(x(t), t);
+
+% Collecting the appropriate equations with the appropriate t parameter
+ex = [
+    x(t0) == px(1), ...
+    x(t1) == px(2), ...
+    xd(t0) == vx(1), ...
+    xd(t1) == vx(2)
+];
+
+mx = solve(ex, [a3 a2 a1 a0]);
+
+% The final coordinate function to x
+cx(t) = mx.a3 * t^3 + mx.a2 * t^2 + mx.a1 * t + mx.a0;
+
+syms b3 b2 b1 b0
+y(t) = b3 * t^3 + b2 * t^2 + b1 * t + b0;
+yd(t) = diff(y(t), t);
+
+% Collecting the appropriate equations with the appropriate t parameter
+ey = [
+    y(t0) == py(1), ...
+    y(t1) == py(2), ...
+    yd(t0) == vy(1), ...
+    yd(t1) == vy(2)
+];
+
+my = solve(ey, [b3 b2 b1 b0]);
+
+% The final coordinate function to y
+cy(t) = my.b3 * t^3 + my.b2 * t^2 + my.b1 * t + my.b0;
+
+fplot(cx(t), cy(t), [t0, t1])
+%%
+px = [2, 4, 8];
+py = [2, 4, 1];
+vx = [2];
+vy = [3];
+
+plot(px, py, '*');
+axis equal;
+axis([0 10 -4 6]);
+hold on
+quiver(px(3),py(3),vx(1),vy(1));
+t0 = -1; t1 = 0; t2 = 1;
+syms a3 a2 a1 a0 t
+x(t) = a3*t^3 + a2*t^2 + a1*t + a0;
+xd(t) = diff(x(t),t);
+ex = [
+    x(t0) == px(1),...
+    x(t1) == px(2),...
+    x(t2) == px(3),...
+    xd(t2) == vx(1)
+    ];
+mx = solve(ex,[a3 a2 a1 a0]);
+cx(t) = mx.a3*t^3 + mx.a2*t^2 + mx.a1*t + mx.a0;
+syms b3 b2 b1 b0
+y(t) = b3*t^3 + b2*t^2 + b1*t + b0;
+yd(t) = diff(y(t),t);
+ey =[
+    y(t0) == py(1),...
+    
+    ]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
